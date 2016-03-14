@@ -1,44 +1,40 @@
-// initilize array 8 pins pro motor Erste VIER PINS SIND INPUT.
-int motorAxisX[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int motorAxisY[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int motorAxisC[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int pinCount = 8; // muss immer 2k aus Nat. zahlen.
-int inputPins = 4; //halfte von pinCount
-int timer = 1500 //MOTOR I/O dauer in ms
+int pinCount = 8;
+int motorAxisX[8] = {7, 6, 2, 3, 10, 9, 11, 12};
+int timer = 1500;
 /*====================================================================================*/
 void setup() {
+ // SerialUSB.begin(9600);
   for (int i = 4; i < pinCount; i++) {
-    //pins 4-7 als Out einstellen
     pinMode(motorAxisX[i], OUTPUT);
-    pinMode(motorAxisY[i], OUTPUT);
-    pinMode(motorAxisC[i], OUTPUT);
+  }
+  for (int i = 4; i < pinCount; i++) {
     digitalWrite(motorAxisX[i], LOW);
   }
   for (int i = 0; i < 4; i++) {
-    //pins 0-3 als IN einstellen
     pinMode(motorAxisX[i], INPUT_PULLUP);
-    pinMode(motorAxisY[i], INPUT_PULLUP);
-    pinMode(motorAxisC[i], INPUT_PULLUP);
   }
 }
 /*====================================================================================*/
 void loop() {
-  //warte auf knopfe
   movement(scannerMatrix(motorAxisX));
-  movement(scannerMatrix(motorAxisY));
-  movement(scannerMatrix(motorAxisC));
-  delay(500); // halb sekunde warten
+ // SerialUSB.print(scannerMatrix(motorAxisX));
 }
 /*====================================================================================*/
 //FUNKTIONEN
 int scannerMatrix(int motor[]) {
-  //aktiv taste scannen
+  //scans for active buttons
   for (int i = 0; i < 4; i++) {
     if (digitalRead(motor[i]) == HIGH) {
       return i;
     }
   }
-  return 999; // SERIAL DEBUG 
+  return 999;
+}
+void count() {
+  // zahlt wie oft ein knopf gedruckt wird, speichert
+}
+void SerialOutput() {
+  // Gibt die momentan schritt anzahl pro motor.
 }
 void movement(int scanner) {
   //wahl nach button von scanner welche bewegung funktion
@@ -62,17 +58,13 @@ void movement(int scanner) {
     }
   }
 }
-
-/* I/O "mode" muss eingestellt nach PIN von obenen pin array
-zb HHHL, oder LLHH, usw
-*/
 void umdrehungPos(int motor[]) {
   // motor dreht 1 umdrehung in Postive achse richtung
   digitalWrite(motor[4], HIGH);
   digitalWrite(motor[5], HIGH);
   digitalWrite(motor[6], HIGH);
   digitalWrite(motor[7], HIGH);
-  delay(timer); 
+  delay(timer);
   for (int i = 4; i < pinCount; i++) {
     digitalWrite(motorAxisX[i], LOW);
   }
