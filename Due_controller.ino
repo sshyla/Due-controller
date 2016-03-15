@@ -1,7 +1,7 @@
 // initilize array 8 pins pro motor Erste VIER PINS SIND INPUT.
-int motorAxisX[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int motorAxisY[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int motorAxisC[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
+int motorAxisX[8] = {7, 6, 2, 3, 10, 9, 11, 12};
+int motorAxisY[8] = {7, 6, 2, 3, 10, 9, 11, 12};
+int motorAxisC[8] = {7, 6, 2, 3, 10, 9, 11, 12};
 int pinCount = 8; // muss immer 2k aus Nat. zahlen.
 int inputPins = 4; //halfte von pinCount
 int timer = 1500 //MOTOR I/O dauer in ms
