@@ -34,6 +34,8 @@ void loop() {
 void interrupt5() {
   SerialUSB.println("Interrupt!");
   endStop(motorAxisX);
+  endStop(motorAxisY);
+  endStop(motorAxisC);
 }
 /*====================================================================================*/
 //FUNKTIONEN
