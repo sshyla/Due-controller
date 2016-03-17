@@ -7,9 +7,9 @@ int inputPins = 4; //Erste 4 von pinCount
 int timer = 1500; //MOTOR I/O dauer in ms
             /*====================================================================================*/
 void setup() {
-  attachInterrupt(4, interrupt5, CHANGE); //IDEALEWEISE fuer an strom eingesetzt.
-  attachInterrupt(5, interrupt5, CHANGE); //IDEALEWEISE fuer an strom eingesetzt.
-  attachInterrupt(6, interrupt5, CHANGE); //IDEALEWEISE fuer an strom eingesetzt.
+  attachInterrupt(4, interrupt5, CHANGE); //pin4
+  attachInterrupt(5, interrupt5, CHANGE); //pin5
+  attachInterrupt(6, interrupt5, CHANGE); //pin6
   for (int i = 4; i < pinCount; i++) {
     //pins 4-7 als Out einstellen
     pinMode(motorAxisX[i], OUTPUT);
@@ -27,9 +27,9 @@ void setup() {
 /*====================================================================================*/
 void loop() {
   //warte auf knopfe
-  movement(scannerMatrix(motorAxisX));
-  movement(scannerMatrix(motorAxisY));
-  movement(scannerMatrix(motorAxisC));
+  movement(scannerMatrix(motorAxisX), motorAxisX);
+  movement(scannerMatrix(motorAxisY), motorAxisY);
+  movement(scannerMatrix(motorAxisC), motorAxisC);
   delay(500); // halb sekunde warten
 }
 //INTERRUPT FUNKTIONEN
@@ -57,7 +57,7 @@ int scannerMatrix(int motor[]) {
   }
   return 999; // SERIAL DEBUG
 }
-void movement(int scanner) {
+void movement(int scanner, int motor[]) {
   //wahl nach button von scanner welche bewegung funktion
   if (scanner < 4) {
     switch (scanner) {
@@ -65,16 +65,16 @@ void movement(int scanner) {
         do_nothing();
         break;
       case 0:
-        umdrehungPos(motorAxisX);
+        umdrehungPos(motor);
         break;
       case 1:
-        umdrehungNeg(motorAxisX);
+        umdrehungNeg(motor);
         break;
       case 2:
-        einSchrittPos(motorAxisX);
+        einSchrittPos(motor);
         break;
       case 3:
-        einSchrittNeg(motorAxisX);
+        einSchrittNeg(motor);
         break;
     }
   }
@@ -128,7 +128,7 @@ void einSchrittNeg(int motor[]) {
   }
 }
 void endStop(int motor[]) {
-  // motor dreht 1 SCHRITT in Negative achse richtung
+  // endschalter funktion. 
   digitalWrite(motor[4], HIGH);
   digitalWrite(motor[5], HIGH);
   digitalWrite(motor[6], HIGH);
