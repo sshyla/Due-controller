@@ -16,6 +16,8 @@ void setup() {
     pinMode(motorAxisY[i], OUTPUT);
     pinMode(motorAxisC[i], OUTPUT);
     digitalWrite(motorAxisX[i], LOW);
+    digitalWrite(motorAxisY[i], LOW);
+    digitalWrite(motorAxisC[i], LOW);
   }
   for (int i = 0; i < 4; i++) {
     //pins 0-3 als IN einstellen
