@@ -1,13 +1,15 @@
 // initilize array 8 pins pro motor Erste VIER PINS SIND INPUT.
-int motorAxisX[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int motorAxisY[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
-int motorAxisC[8] = {0, 7, 6, 2, 3, 10, 9, 11, 12};
+int motorAxisX[9] = {0, 7, 6, 2, 3, 10, 9, 11, 4};
+int motorAxisY[9] = {0, 7, 6, 2, 3, 10, 9, 11, 4};
+int motorAxisC[9] = {0, 7, 6, 2, 3, 10, 9, 11, 4};
 int pinCount = 8; // muss immer 2k aus Nat. zahlen.
-int inputPins = 4; //halfte von pinCount
-int timer = 1500 //MOTOR I/O dauer in ms
+int inputPins = 4; //Erste 4 von pinCount
+int timer = 1500; //MOTOR I/O dauer in ms
             /*====================================================================================*/
 void setup() {
   attachInterrupt(4, interrupt5, CHANGE); //IDEALEWEISE fuer an strom eingesetzt.
+  attachInterrupt(5, interrupt5, CHANGE); //IDEALEWEISE fuer an strom eingesetzt.
+  attachInterrupt(6, interrupt5, CHANGE); //IDEALEWEISE fuer an strom eingesetzt.
   for (int i = 4; i < pinCount; i++) {
     //pins 4-7 als Out einstellen
     pinMode(motorAxisX[i], OUTPUT);
@@ -31,12 +33,19 @@ void loop() {
   delay(500); // halb sekunde warten
 }
 //INTERRUPT FUNKTIONEN
-void interrupt5() {
-  SerialUSB.println("Interrupt!");
+void interrupt4() {
+  //  SerialUSB.println("Danger!");
   endStop(motorAxisX);
+}
+void interrupt5() {
+  //  SerialUSB.println("Danger!");
   endStop(motorAxisY);
+}
+void interrupt6() {
+  //  SerialUSB.println("Danger!");
   endStop(motorAxisC);
 }
+
 /*====================================================================================*/
 //FUNKTIONEN
 int scannerMatrix(int motor[]) {
