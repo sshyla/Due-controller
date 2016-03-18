@@ -7,13 +7,13 @@ long schrittAnzahl = 0;
 int taktAnzahl = 500; // Anzahl von schritten pro umdrehung
 int leadScrewPitch = 0.5; // mm/umdrehung
 //int linearBewegung = stepp / pitch // takt/mmm (linear)
-long motorStepCount[3] = {0};
-
+volatile long motorStepCount[3] = {0};
+long x = 0;
 
 /*====================================================================================*/
 void setup() {
   /*=====*/
-  attachInterrupt(4,interrupt5,CHANGE);
+  attachInterrupt(4,interrupt5,HIGH);
   /*=====*/
   
   // SerialUSB.begin(9600);
@@ -33,7 +33,7 @@ void loop() {
 /*====================================================================================*/
 //INTERRUPT FUNKTIONEN
 void interrupt5(){
-SerialUSB.println("Interrupt!");
+SerialUSB.println(motorStepCount[0]);
 endStop(motorAxisX);
 }
 /*====================================================================================*/
@@ -83,20 +83,19 @@ void umdrehungPos(int motor[]) {
   digitalWrite(motor[5], LOW);
   digitalWrite(motor[6], LOW);
   digitalWrite(motor[7], HIGH);
-  int x = 0;
   delay(timer);
-/*  for (int i = 4; i < pinCount; i++) {
-    digitalWrite(motor, LOW);
+  for (int i = 4; i < pinCount; i++) {
+    digitalWrite(motor[i], LOW);
   }
-  switch (mark) {
+  switch (motor[8]) {
       case 777:
-      x = motorStepCount[3] + 500;
-      motorStepCount[3] = x;
+      x = motorStepCount[0] + 500;
+      motorStepCount[0] = x;
       break;
       case 999:
       do_nothing();
       break;
-  } */
+  }
 }
 void umdrehungNeg(int motor[]) {
   // motor dreht 1 umdrehung in Negative achse richtung
@@ -107,6 +106,15 @@ void umdrehungNeg(int motor[]) {
   delay(timer);
   for (int i = 4; i < pinCount; i++) {
     digitalWrite(motorAxisX[i], LOW);
+  }
+  switch (motor[8]) {
+      case 777:
+      x = motorStepCount[0] - 500;
+      motorStepCount[0] = x;
+      break;
+      case 999:
+      do_nothing();
+      break;
   }
 }
 void einSchrittPos(int motor[]) {
@@ -119,6 +127,15 @@ void einSchrittPos(int motor[]) {
   for (int i = 4; i < pinCount; i++) {
     digitalWrite(motorAxisX[i], LOW);
   }
+  switch (motor[8]) {
+      case 777:
+      x = motorStepCount[0] + 1;
+      motorStepCount[0] = x;
+      break;
+      case 999:
+      do_nothing();
+      break;
+  }
 }
 void einSchrittNeg(int motor[]) {
   // motor dreht 1 SCHRITT in Negative achse richtung
@@ -129,6 +146,15 @@ void einSchrittNeg(int motor[]) {
   delay(timer);
   for (int i = 4; i < pinCount; i++) {
     digitalWrite(motorAxisX[i], LOW);
+  }
+  switch (motor[8]) {
+      case 777:
+      x = motorStepCount[0] - 1;
+      motorStepCount[0] = x;
+      break;
+      case 999:
+      do_nothing();
+      break;
   }
 }
 void endStop(int motor[]) {
