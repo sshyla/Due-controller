@@ -7,7 +7,7 @@ long schrittAnzahl = 0;
 int taktAnzahl = 500; // Anzahl von schritten pro umdrehung
 int leadScrewPitch = 0.5; // mm/umdrehung
 //int linearBewegung = stepp / pitch // takt/mmm (linear)
-long motorStepCount[3] = {0};
+
 
 
 /*====================================================================================*/
